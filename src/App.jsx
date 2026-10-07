@@ -41,28 +41,27 @@ const QUARTERS = {
       'Schema Markup (LocalBusiness, Product, Organization) implementation',
       'klae-plt.com/shop checkout optimisation',
     ],
-    synergy: 'DM gets accurate tracking for every ringgit of ad spend, plus search-ready pages.',
+    synergy: 'Sales gets accurate tracking of where every lead comes from, plus search-ready pages.',
     kpis: ['100% sites pass Core Web Vitals (LCP < 2.5s)', '0 crawl errors', '+40% Google indexed pages'],
   },
   Q2: {
     title: 'Content Hub & Lead Automation', range: 'Apr – Jun 2027',
     milestones: [
-      'Self-service blog / case-study CMS for DM',
+      'Self-service blog / case-study CMS for easy content updates',
       'Quote request forms routed to Share Contact System & WhatsApp API',
       'Google Business Profile link synchronisation',
     ],
-    synergy: 'DM publishes content without waiting on code changes; sales receives leads instantly.',
+    synergy: 'Content goes live without waiting on code changes; sales receives leads instantly.',
     kpis: ['+25% inbound form leads', 'Lead response dispatch time < 2 minutes', 'Form load time < 1.5s'],
   },
   Q3: {
-    title: 'High-Converting Landing Pages & Intranet Phase 3', range: 'Jul – Sep 2027',
+    title: 'High-Converting Landing Pages & Conversion Testing', range: 'Jul – Sep 2027',
     milestones: [
-      'Dedicated campaign landing pages for DM paid ads',
-      'Intranet Phase 3: mileage claim automation, shop inventory sync, email notifications',
+      'Dedicated campaign landing pages for paid ads',
       'A/B testing on B2B CTAs (JoA, Perfect Automation, KLAESB)',
     ],
     synergy: 'Every paid campaign gets a purpose-built, measurable landing page.',
-    kpis: ['Landing page conversion rate > 3.5%', '50% faster internal OBR processing'],
+    kpis: ['Landing page conversion rate > 3.5%', 'A/B-tested CTAs live on all B2B sites'],
   },
   Q4: {
     title: 'Security Audit, Disaster Recovery & Annual ROI Review', range: 'Oct – Dec 2027',
@@ -95,7 +94,7 @@ const RFQ = ['ALL IT Hypermarket B2B', 'TMT (Thunder Match) Corporate', 'Viewnet
 const TOOLS = [
   {
     icon: Zap, name: 'Claude Pro', role: 'Primary AI Engine for SWE', price: '$20/month', annual: '~RM 1,044/year',
-    pros: ['Top-tier contextual understanding for complex multi-file Next.js & PHP refactoring', 'Architectural problem-solving', 'Rapid debugging'],
+    pros: ['Already used daily and fully utilised, proven value', 'Top-tier contextual understanding for complex multi-file Next.js & PHP refactoring', 'Architectural problem-solving', 'Rapid debugging'],
     cons: ['Cloud-dependent', 'Requires clear prompt structuring'],
   },
   {
@@ -116,9 +115,9 @@ const SCENARIOS = {
     items: [
       ['Synology DS925+ with 2x 8TB HDD (RAID 1 Redundancy)', 8290],
       ['16GB ECC RAM Upgrade', 480],
-      ['Dual Monitors (27" + 24" + Arm)', 1420],
+      ['Dual Monitors (MSI 27" + MSI 24.5" + Arm)', 898.2],
       ['Claude Pro Subscription', 1044],
-      ['ChatGPT / Marketing AI Support', 1044],
+      ['ChatGPT AI Support', 1044],
       ['SEO Analytics Tool', 1514],
       ['Cloud, DNS & SSL Maintenance', 1200],
     ],
@@ -129,7 +128,7 @@ const SCENARIOS = {
     items: [
       ['Synology DS925+ with 1x 8TB HDD (no RAID 1)', 6195],
       ['16GB ECC RAM Upgrade', 480],
-      ['Dual Monitors', 1420],
+      ['Dual Monitors (MSI 27" + MSI 24.5" + Arm)', 898.2],
       ['Claude Pro Subscription', 1044],
       ['ChatGPT AI', 1044],
       ['SEO Tool (deferred to free Google tools)', 0],
@@ -139,7 +138,7 @@ const SCENARIOS = {
   },
 }
 
-const rm = (n) => 'RM ' + n.toLocaleString('en-MY')
+const rm = (n) => 'RM ' + n.toLocaleString('en-MY', { minimumFractionDigits: Number.isInteger(n) ? 0 : 2, maximumFractionDigits: 2 })
 
 /* ----------------------------- COMPONENTS ----------------------------- */
 
@@ -179,7 +178,7 @@ function Hero() {
           closes the deals.
         </h1>
         <p className="mt-10 max-w-3xl text-lg md:text-xl text-[#b7c6c2] leading-relaxed">
-          Transforming SWE & Digital Marketing from a cost center into a continuous pipeline of qualified leads, enterprise web infrastructure, and high-uptime operational systems across all corporate entities.
+          Transforming SWE from a cost center into a continuous pipeline of qualified leads, enterprise web infrastructure, and high-uptime operational systems across all corporate entities.
         </p>
         <div className="mt-14 grid md:grid-cols-3 gap-6">
           {KPIS.map(({ big, text, icon: Icon }) => (
@@ -243,7 +242,7 @@ function Roadmap() {
   return (
     <section id="roadmap" className="grid-bg bg-[#171e19] text-white py-24 border-y border-[#b7c6c2]/20">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="font-display text-6xl md:text-8xl">2027 Milestones: <Highlight>SWE x MARKETING</Highlight> synergy</h2>
+        <h2 className="font-display text-6xl md:text-8xl">2027 Milestones: <Highlight>SWE x SALES</Highlight> impact</h2>
         <div className="mt-12 flex flex-wrap gap-3">
           {Object.keys(QUARTERS).map((k) => (
             <button key={k} onClick={() => setQ(k)}
@@ -263,7 +262,7 @@ function Roadmap() {
               ))}</ul>
             </div>
             <div>
-              <h4 className="font-mono text-xs text-[#b7c6c2] mb-3">// DM SYNERGY</h4>
+              <h4 className="font-mono text-xs text-[#b7c6c2] mb-3">// SALES IMPACT</h4>
               <p className="text-lg">{d.synergy}</p>
             </div>
             <div>
@@ -321,18 +320,27 @@ function Hardware() {
         </div>
         <p className="mt-4 text-sm"><strong>Potential corporate RFQ channels:</strong> {RFQ.join(' · ')}</p>
 
-        <h3 className="font-display text-4xl mt-20">Part B // Dual monitor setup (27" QHD + 24" FHD)</h3>
+        <h3 className="font-display text-4xl mt-20">Part B // Dual monitor setup (MSI 27" FHD + MSI 24.5" FHD)</h3>
         <div className="mt-6 grid md:grid-cols-2 gap-6">
           <div className="lift border border-[#171e19]/15 p-8">
             <Tag>Option A</Tag>
             <h4 className="font-display text-4xl mt-3">Single monitor (status quo)</h4>
             <p className="mt-4"><CheckCircle className="inline mr-2" size={18} /><strong>Pro:</strong> Low upfront cost.</p>
-            <p className="mt-2"><AlertTriangle className="inline mr-2" size={18} /><strong>Con:</strong> Extreme context-switching fatigue between IDE, terminal, browser DevTools, DBeaver and DM visual assets. Loss of ~20 mins/day per developer.</p>
+            <p className="mt-2"><AlertTriangle className="inline mr-2" size={18} /><strong>Con:</strong> Extreme context-switching fatigue between IDE, terminal, browser DevTools, DBeaver and design assets. Loss of ~20 mins/day per developer.</p>
           </div>
           <div className="lift border border-[#171e19]/15 p-8 bg-[#ffe17c]/30">
             <Tag>Option B // Recommended</Tag>
-            <h4 className="font-display text-4xl mt-3">Dual display <span className="font-mono text-2xl">RM 1,420</span></h4>
-            <p className="mt-4 font-mono text-sm">27" QHD RM850 + 24" FHD RM420 + Dual Arm RM150</p>
+            <h4 className="font-display text-4xl mt-3">Dual display <span className="font-mono text-2xl">RM 898.20</span></h4>
+            <div className="mt-4 font-mono text-sm space-y-2">
+              <p>
+                <a className="underline decoration-[#171e19] underline-offset-4" href="https://s.shopee.com.my/qk4kRpuNz?share_channel_code=1" target="_blank" rel="noreferrer">MSI PRO MP275 27" FHD 100Hz IPS (3YW)</a>: RM 399
+              </p>
+              <p>
+                <a className="underline decoration-[#171e19] underline-offset-4" href="https://s.shopee.com.my/BUNxAU5KJ?share_channel_code=1" target="_blank" rel="noreferrer">MSI PRO MP251 E14L 24.5" FHD 144Hz IPS (3YW)</a>: RM 349.20
+              </p>
+              <p>Dual Monitor Arm: RM 150</p>
+              <p className="text-xs">Shopee website prices. Mobile app prices are lower (RM 311 + RM 290), i.e. RM 751 total with arm.</p>
+            </div>
             <p className="mt-3"><Monitor className="inline mr-2" size={18} /><strong>Boosts coding velocity by 30%</strong>, enabling instant code-inspect comparison, side-by-side terminal logs and immediate responsive testing. Saves 60+ hours per year across 5 company domains.</p>
           </div>
         </div>
@@ -406,9 +414,9 @@ function Budget() {
             className="bg-[#ffe17c] text-[#171e19] font-bold px-6 py-4 border border-[#171e19] hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_#171e19] inline-flex items-center gap-2">
             <Download size={18} /> Download Executive PDF Summary
           </button>
-          <a href="mailto:?subject=Q1%202027%20Planning%20Sync%20-%20Sales%20%26%20DM&body=Let%27s%20schedule%20the%20Q1%20planning%20sync."
+          <a href="mailto:?subject=Q1%202027%20Planning%20Sync%20-%20Sales&body=Let%27s%20schedule%20the%20Q1%20planning%20sync."
             className="border-2 border-[#171e19] text-[#171e19] font-bold px-6 py-4 hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_#ffe17c] inline-flex items-center gap-2">
-            <Calendar size={18} /> Schedule Q1 Planning Sync with Sales & DM
+            <Calendar size={18} /> Schedule Q1 Planning Sync with Sales
           </a>
         </div>
       </div>
