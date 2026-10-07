@@ -1,0 +1,434 @@
+import { useState } from 'react'
+import {
+  Server, Cpu, Monitor, Zap, Shield, Search, TrendingUp, CheckCircle,
+  AlertTriangle, ExternalLink, Calendar, Download, MemoryStick, Network,
+} from 'lucide-react'
+
+/* ----------------------------- MOCK DATA ----------------------------- */
+
+const NAV = [
+  ['Foundation 2026', '#foundation'],
+  ['2027 Roadmap', '#roadmap'],
+  ['Hardware & NAS', '#hardware'],
+  ['AI & Tooling', '#tooling'],
+  ['Budget Simulator', '#budget'],
+]
+
+const KPIS = [
+  { big: '5+', text: 'Websites rebuilt & fine-tuned by end of 2026', icon: TrendingUp },
+  { big: '20GB', text: 'RAM NAS upgrade for zero-bottleneck Docker staging', icon: Cpu },
+  { big: '2X', text: 'Estimated velocity via Claude Pro engine', icon: Zap },
+]
+
+const TIMELINE = [
+  { name: '2R Website', url: 'https://2r.com.my/', dates: '06 Oct – 16 Oct 2026', tag: 'Revamp & Responsive Tuning', entity: '2R', month: 'Oct' },
+  { name: 'Online Store for JoA & KLAESB', url: 'https://klae-plt.com/shop', dates: '08 Oct – 21 Oct 2026', tag: 'E-Commerce Engine', entity: 'JoA / KLAESB', month: 'Oct' },
+  { name: 'Share Contact System', url: 'https://share-contact.klaesb.com/', dates: '12 Oct – 23 Oct 2026', tag: 'Lead Capture Routing', entity: 'KLAESB', month: 'Oct' },
+  { name: 'JoA Automation Website', url: 'https://joautomation.com/', dates: '26 Oct – 30 Oct 2026', tag: 'B2B Corporate Polish', entity: 'JoA', month: 'Oct' },
+  { name: 'Perfect Automation', url: 'https://pf-automation.com/', dates: '02 Nov – 06 Nov 2026', tag: 'Industrial Showcase', entity: 'Perfect Automation', month: 'Nov' },
+  { name: 'Intranet Phase 2 (OBR Requisition, Ticketing, Booking)', url: null, dates: '04 Nov – 30 Nov 2026', tag: 'Operations Automation', entity: 'Internal', month: 'Nov' },
+  { name: 'Ex Team Website', url: 'https://exteamsb.com/', dates: '01 Dec – 07 Dec 2026', tag: 'Engineering Services', entity: 'Ex Team', month: 'Dec' },
+  { name: 'KLAESB Main Website', url: 'https://www.klaesb.com/', dates: '08 Dec – 18 Dec 2026', tag: 'Brand Revamp', entity: 'KLAESB', month: 'Dec' },
+  { name: 'Site Cleanup & Final Fine-Tuning', url: null, dates: '21 Dec – 31 Dec 2026', tag: 'Code Cleanup, Caching & Speed Tuning', entity: 'All', month: 'Dec' },
+]
+
+const QUARTERS = {
+  Q1: {
+    title: 'Technical SEO & Conversion Engine', range: 'Jan – Mar 2027',
+    milestones: [
+      'Google Search Console, GA4 & Meta Pixel set up across all 5 sites',
+      'Core Web Vitals score > 90 (image optimisation, WebP)',
+      'Schema Markup (LocalBusiness, Product, Organization) implementation',
+      'klae-plt.com/shop checkout optimisation',
+    ],
+    synergy: 'DM gets accurate tracking for every ringgit of ad spend, plus search-ready pages.',
+    kpis: ['100% sites pass Core Web Vitals (LCP < 2.5s)', '0 crawl errors', '+40% Google indexed pages'],
+  },
+  Q2: {
+    title: 'Content Hub & Lead Automation', range: 'Apr – Jun 2027',
+    milestones: [
+      'Self-service blog / case-study CMS for DM',
+      'Quote request forms routed to Share Contact System & WhatsApp API',
+      'Google Business Profile link synchronisation',
+    ],
+    synergy: 'DM publishes content without waiting on code changes; sales receives leads instantly.',
+    kpis: ['+25% inbound form leads', 'Lead response dispatch time < 2 minutes', 'Form load time < 1.5s'],
+  },
+  Q3: {
+    title: 'High-Converting Landing Pages & Intranet Phase 3', range: 'Jul – Sep 2027',
+    milestones: [
+      'Dedicated campaign landing pages for DM paid ads',
+      'Intranet Phase 3: mileage claim automation, shop inventory sync, email notifications',
+      'A/B testing on B2B CTAs (JoA, Perfect Automation, KLAESB)',
+    ],
+    synergy: 'Every paid campaign gets a purpose-built, measurable landing page.',
+    kpis: ['Landing page conversion rate > 3.5%', '50% faster internal OBR processing'],
+  },
+  Q4: {
+    title: 'Security Audit, Disaster Recovery & Annual ROI Review', range: 'Oct – Dec 2027',
+    milestones: [
+      'Scheduled automated backup/restore drills via Synology DS925+',
+      'Annual SEO keyword audit vs competitors',
+      'Dependency security upgrades (Next.js, PHP, Node.js) & SSL tuning',
+    ],
+    synergy: 'Full web-traffic-to-sales attribution report for management.',
+    kpis: ['99.9% web uptime', '0 data loss incidents', 'Complete sales attribution report delivered'],
+  },
+}
+
+const SPECS = [
+  [Cpu, 'CPU', 'Quad-core 2.2 GHz AMD Ryzen Embedded (8 Threads)'],
+  [MemoryStick, 'Default Memory', '4 GB DDR4 ECC SODIMM (1x slot occupied, 1x slot free)'],
+  [Server, 'Max Capacity', 'Expandable to 32 GB (2x 16 GB ECC)'],
+  [Server, 'Storage', '4-bay SATA (up to 9 bays with DX525) + 2x M.2 NVMe SSD slots'],
+  [Network, 'Network', 'Dual 2.5GbE RJ-45 with Link Aggregation / Failover'],
+]
+
+const VENDORS = [
+  { name: 'Bumi Technology', detail: 'DS925+ RM 4,100 (2-yr warranty) + 1x 8TB HAT3320-8T RM 2,095 (3-yr warranty)', total: '1 drive: RM 6,195 | 2 drives (RAID 1): RM 8,290', note: 'RECOMMENDED – Lowest Unit Price', best: true },
+  { name: 'TC Tech Sales', detail: 'DS925+ RM 4,620 (chassis only)', total: 'RM 4,620 + drives', note: 'RM 520 higher than Bumi Tech without drives', best: false },
+  { name: 'Shopee Official Bundle', detail: 'DS925+ with 2x 4TB HAT3300', total: 'RM 7,365', note: 'Inferior value – only 4TB usable in RAID 1', best: false },
+]
+
+const RFQ = ['ALL IT Hypermarket B2B', 'TMT (Thunder Match) Corporate', 'Viewnet B2B', 'Ban Leong Technologies (Official Synology Distributor Malaysia)']
+
+const TOOLS = [
+  {
+    icon: Zap, name: 'Claude Pro', role: 'Primary AI Engine for SWE', price: '$20/month', annual: '~RM 1,044/year',
+    pros: ['Top-tier contextual understanding for complex multi-file Next.js & PHP refactoring', 'Architectural problem-solving', 'Rapid debugging'],
+    cons: ['Cloud-dependent', 'Requires clear prompt structuring'],
+  },
+  {
+    icon: Shield, name: 'Cloud & Security', role: 'Cloudflare Maintenance', price: 'RM 0 free tier today', annual: 'Provision RM 1,200/year',
+    pros: ['DDoS mitigation', 'Ultra-fast CDN caching', 'RM 0 at present tier (2 internal systems)', 'Budget covers enterprise domain SSL & DNS resilience for all active sites'],
+    cons: [],
+  },
+  {
+    icon: Search, name: 'SEO Tracking & Search Intelligence', role: 'Mangools / Ubersuggest', price: '$29/month', annual: '~RM 1,514/year',
+    pros: ['Fraction of Semrush cost (RM 7,300/yr)', 'Tracks localised Google Malaysia rankings', 'Keyword difficulty & competitor backlink auditing'],
+    cons: ['Smaller backlink database than Ahrefs / Semrush enterprise'],
+  },
+]
+
+const SCENARIOS = {
+  rec: {
+    label: 'Recommended: High Reliability',
+    items: [
+      ['Synology DS925+ with 2x 8TB HDD (RAID 1 Redundancy)', 8290],
+      ['16GB ECC RAM Upgrade', 480],
+      ['Dual Monitors (27" + 24" + Arm)', 1420],
+      ['Claude Pro Subscription', 1044],
+      ['ChatGPT / Marketing AI Support', 1044],
+      ['SEO Analytics Tool', 1514],
+      ['Cloud, DNS & SSL Maintenance', 1200],
+    ],
+    note: 'Full data redundancy. A single HDD failure costs zero data.',
+  },
+  lean: {
+    label: 'Lean Baseline',
+    items: [
+      ['Synology DS925+ with 1x 8TB HDD (no RAID 1)', 6195],
+      ['16GB ECC RAM Upgrade', 480],
+      ['Dual Monitors', 1420],
+      ['Claude Pro Subscription', 1044],
+      ['ChatGPT AI', 1044],
+      ['SEO Tool (deferred to free Google tools)', 0],
+      ['Cloud & DNS Maintenance', 1200],
+    ],
+    note: 'Saves RM 3,609 but carries NO drive redundancy if the HDD fails.',
+  },
+}
+
+const rm = (n) => 'RM ' + n.toLocaleString('en-MY')
+
+/* ----------------------------- COMPONENTS ----------------------------- */
+
+const Highlight = ({ children }) => (
+  <span className="inline-block bg-[#ffe17c] text-[#171e19] px-3 py-1 -rotate-3 font-normal">{children}</span>
+)
+
+const Tag = ({ children, dark }) => (
+  <span className={`font-mono text-xs uppercase px-2 py-1 border ${dark ? 'border-[#b7c6c2]/20 text-[#b7c6c2]' : 'border-[#171e19]/15 text-[#171e19]'}`}>{children}</span>
+)
+
+function Header() {
+  return (
+    <nav className="sticky top-0 z-50 bg-[#171e19] border-b border-[#b7c6c2]/20 text-white">
+      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
+        <a href="#top" className="font-display text-xl whitespace-nowrap">SWE GROWTH ENGINE // 2027</a>
+        <div className="hidden lg:flex gap-6 text-sm font-medium">
+          {NAV.map(([l, h]) => (
+            <a key={h} href={h} className="text-[#b7c6c2] hover:text-[#ffe17c]">[{l}]</a>
+          ))}
+        </div>
+        <span className="hidden md:block bg-[#ffe17c] text-[#171e19] font-mono text-xs font-bold px-3 py-2 whitespace-nowrap">
+          STATUS: READY FOR Q1 EXECUTION
+        </span>
+      </div>
+    </nav>
+  )
+}
+
+function Hero() {
+  return (
+    <section id="top" className="grid-bg bg-[#171e19] text-white py-24 border-b border-[#b7c6c2]/20">
+      <div className="max-w-7xl mx-auto px-6">
+        <h1 className="font-display text-6xl md:text-8xl xl:text-9xl">
+          We code the engine.{' '}
+          <Highlight>SALES</Highlight>{' '}
+          closes the deals.
+        </h1>
+        <p className="mt-10 max-w-3xl text-lg md:text-xl text-[#b7c6c2] leading-relaxed">
+          Transforming SWE & Digital Marketing from a cost center into a continuous pipeline of qualified leads, enterprise web infrastructure, and high-uptime operational systems across all corporate entities.
+        </p>
+        <div className="mt-14 grid md:grid-cols-3 gap-6">
+          {KPIS.map(({ big, text, icon: Icon }) => (
+            <div key={big} className="lift border border-[#b7c6c2]/20 bg-[#272727] p-6">
+              <Icon className="text-[#ffe17c] mb-4" size={28} />
+              <div className="font-display text-6xl text-[#ffe17c]">{big}</div>
+              <p className="mt-3 font-bold uppercase text-sm tracking-wide">{text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function Foundation() {
+  const [month, setMonth] = useState('All')
+  const list = TIMELINE.filter((t) => month === 'All' || t.month === month)
+  return (
+    <section id="foundation" className="grid-bg bg-white py-24">
+      <div className="max-w-7xl mx-auto px-6">
+        <Tag>Q4 2026 // Pre-requisite overhaul</Tag>
+        <h2 className="font-display text-6xl md:text-8xl mt-4">Clean codebase. <Highlight>ZERO BS.</Highlight></h2>
+        <p className="mt-6 max-w-2xl text-lg text-[#272727]">
+          Before running 2027 revenue campaigns, every website foundation is audited, upgraded, and consolidated.
+        </p>
+        <div className="mt-10 flex flex-wrap gap-3">
+          {['All', 'Oct', 'Nov', 'Dec'].map((m) => (
+            <button key={m} onClick={() => setMonth(m)}
+              className={`font-mono text-sm px-4 py-2 border border-[#171e19]/15 hover:shadow-[4px_4px_0px_0px_#ffe17c] hover:-translate-y-1 ${month === m ? 'bg-[#171e19] text-[#ffe17c]' : 'bg-white'}`}>
+              {m === 'All' ? 'ALL PROJECTS' : m.toUpperCase() + ' 2026'}
+            </button>
+          ))}
+        </div>
+        <div className="mt-8 grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {list.map((t) => (
+            <div key={t.name} className="lift bg-white border border-[#171e19]/15 p-6 flex flex-col">
+              <div className="flex items-center gap-2 font-mono text-sm font-bold"><Calendar size={16} />{t.dates}</div>
+              <h3 className="font-display text-3xl mt-4">{t.name}</h3>
+              <div className="mt-3 flex gap-2 flex-wrap"><Tag>{t.tag}</Tag><Tag>{t.entity}</Tag></div>
+              {t.url && (
+                <a href={t.url} target="_blank" rel="noreferrer" className="mt-auto pt-5 inline-flex items-center gap-1 text-sm font-bold underline decoration-[#ffe17c] decoration-4 underline-offset-4">
+                  {t.url.replace(/^https?:\/\//, '')} <ExternalLink size={14} />
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+        <div className="mt-10 border border-[#171e19]/15 border-l-8 border-l-[#ffe17c] bg-[#b7c6c2]/20 p-6 flex gap-4">
+          <CheckCircle className="shrink-0" />
+          <p><strong>Entity Clarity:</strong> KLAE PLT (Training portal & shop – completed and running) is operated independently from KLAESB (Main engineering portal – scheduled for Dec 2026 revamp).</p>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function Roadmap() {
+  const [q, setQ] = useState('Q1')
+  const d = QUARTERS[q]
+  return (
+    <section id="roadmap" className="grid-bg bg-[#171e19] text-white py-24 border-y border-[#b7c6c2]/20">
+      <div className="max-w-7xl mx-auto px-6">
+        <h2 className="font-display text-6xl md:text-8xl">2027 Milestones: <Highlight>SWE x MARKETING</Highlight> synergy</h2>
+        <div className="mt-12 flex flex-wrap gap-3">
+          {Object.keys(QUARTERS).map((k) => (
+            <button key={k} onClick={() => setQ(k)}
+              className={`font-display text-3xl px-8 py-3 border border-[#b7c6c2]/20 hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_#ffe17c] ${q === k ? 'bg-[#ffe17c] text-[#171e19]' : 'bg-[#272727]'}`}>
+              {k}
+            </button>
+          ))}
+        </div>
+        <div className="mt-8 border border-[#b7c6c2]/20 bg-[#272727] p-8">
+          <div className="font-mono text-[#ffe17c] text-sm">{d.range}</div>
+          <h3 className="font-display text-4xl md:text-6xl mt-2">{d.title}</h3>
+          <div className="mt-8 grid lg:grid-cols-3 gap-8">
+            <div>
+              <h4 className="font-mono text-xs text-[#b7c6c2] mb-3">// DELIVERABLES</h4>
+              <ul className="space-y-3">{d.milestones.map((m) => (
+                <li key={m} className="flex gap-2"><CheckCircle size={18} className="text-[#ffe17c] shrink-0 mt-1" />{m}</li>
+              ))}</ul>
+            </div>
+            <div>
+              <h4 className="font-mono text-xs text-[#b7c6c2] mb-3">// DM SYNERGY</h4>
+              <p className="text-lg">{d.synergy}</p>
+            </div>
+            <div>
+              <h4 className="font-mono text-xs text-[#b7c6c2] mb-3">// MEASURABLE KPIs</h4>
+              <ul className="space-y-3">{d.kpis.map((k) => (
+                <li key={k} className="font-mono text-sm border border-[#ffe17c]/60 text-[#ffe17c] p-3">{k}</li>
+              ))}</ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function Hardware() {
+  return (
+    <section id="hardware" className="grid-bg bg-white py-24">
+      <div className="max-w-7xl mx-auto px-6">
+        <h2 className="font-display text-6xl md:text-8xl">Hardware infrastructure & <Highlight>JUSTIFICATION</Highlight></h2>
+
+        <h3 className="font-display text-4xl mt-14">Part A // Synology DS925+ & RAM bottleneck</h3>
+        <div className="mt-6 grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {SPECS.map(([Icon, k, v]) => (
+            <div key={k} className="lift border border-[#171e19]/15 bg-white p-5">
+              <Icon className="mb-3" />
+              <div className="font-mono text-xs text-[#272727]/70">{k.toUpperCase()}</div>
+              <div className="font-bold mt-1">{v}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-8 bg-[#171e19] text-white p-8 border-l-8 border-[#ffe17c] flex gap-4">
+          <AlertTriangle className="text-[#ffe17c] shrink-0" size={28} />
+          <p><strong className="text-[#ffe17c]">Why RAM runs high on the existing test NAS:</strong> Running Active Backup for Business + Synology Drive indexing + Docker Container Manager (running dev/staging web databases for 5 companies) exhausts 4GB immediately. Adding a 16GB DDR4 ECC RAM stick (<span className="font-mono">~RM480</span>) brings total capacity to 20GB, completely eliminating memory swap throttling.</p>
+        </div>
+
+        <h4 className="font-mono text-sm mt-12 mb-4">// VENDOR COMPARISON</h4>
+        <div className="overflow-x-auto border border-[#171e19]/15">
+          <table className="w-full text-left text-sm">
+            <thead className="bg-[#171e19] text-white font-mono text-xs">
+              <tr>{['VENDOR', 'CONFIGURATION', 'TOTAL', 'VERDICT'].map((h) => <th key={h} className="p-4">{h}</th>)}</tr>
+            </thead>
+            <tbody>
+              {VENDORS.map((v) => (
+                <tr key={v.name} className={`border-t border-[#171e19]/15 hover:bg-[#ffe17c]/30 ${v.best ? 'bg-[#ffe17c]/20' : ''}`} style={{ transition: 'all 300ms' }}>
+                  <td className="p-4 font-bold">{v.name}</td>
+                  <td className="p-4">{v.detail}</td>
+                  <td className="p-4 font-mono">{v.total}</td>
+                  <td className="p-4 font-bold">{v.best && <span className="bg-[#ffe17c] px-2 py-1 mr-2">★</span>}{v.note}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-4 text-sm"><strong>Potential corporate RFQ channels:</strong> {RFQ.join(' · ')}</p>
+
+        <h3 className="font-display text-4xl mt-20">Part B // Dual monitor setup (27" QHD + 24" FHD)</h3>
+        <div className="mt-6 grid md:grid-cols-2 gap-6">
+          <div className="lift border border-[#171e19]/15 p-8">
+            <Tag>Option A</Tag>
+            <h4 className="font-display text-4xl mt-3">Single monitor (status quo)</h4>
+            <p className="mt-4"><CheckCircle className="inline mr-2" size={18} /><strong>Pro:</strong> Low upfront cost.</p>
+            <p className="mt-2"><AlertTriangle className="inline mr-2" size={18} /><strong>Con:</strong> Extreme context-switching fatigue between IDE, terminal, browser DevTools, DBeaver and DM visual assets. Loss of ~20 mins/day per developer.</p>
+          </div>
+          <div className="lift border border-[#171e19]/15 p-8 bg-[#ffe17c]/30">
+            <Tag>Option B // Recommended</Tag>
+            <h4 className="font-display text-4xl mt-3">Dual display <span className="font-mono text-2xl">RM 1,420</span></h4>
+            <p className="mt-4 font-mono text-sm">27" QHD RM850 + 24" FHD RM420 + Dual Arm RM150</p>
+            <p className="mt-3"><Monitor className="inline mr-2" size={18} /><strong>Boosts coding velocity by 30%</strong>, enabling instant code-inspect comparison, side-by-side terminal logs and immediate responsive testing. Saves 60+ hours per year across 5 company domains.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function Tooling() {
+  return (
+    <section id="tooling" className="grid-bg bg-[#171e19] text-white py-24 border-y border-[#b7c6c2]/20">
+      <div className="max-w-7xl mx-auto px-6">
+        <h2 className="font-display text-6xl md:text-8xl">Software & <Highlight>AI</Highlight> multipliers</h2>
+        <div className="mt-12 grid lg:grid-cols-3 gap-6">
+          {TOOLS.map(({ icon: Icon, name, role, price, annual, pros, cons }) => (
+            <div key={name} className="lift border border-[#b7c6c2]/20 bg-[#272727] p-6 flex flex-col">
+              <Icon className="text-[#ffe17c]" size={30} />
+              <h3 className="font-display text-4xl mt-4">{name}</h3>
+              <div className="text-[#b7c6c2] text-sm">{role}</div>
+              <div className="mt-4 font-mono">
+                <div className="text-[#ffe17c] text-xl font-bold">{price}</div>
+                <div className="text-sm">{annual}</div>
+              </div>
+              <h4 className="font-mono text-xs text-[#b7c6c2] mt-6 mb-2">// PROS</h4>
+              <ul className="space-y-2 text-sm">{pros.map((p) => <li key={p} className="flex gap-2"><CheckCircle size={16} className="text-[#ffe17c] shrink-0 mt-0.5" />{p}</li>)}</ul>
+              {cons.length > 0 && <>
+                <h4 className="font-mono text-xs text-[#b7c6c2] mt-6 mb-2">// CONS</h4>
+                <ul className="space-y-2 text-sm">{cons.map((p) => <li key={p} className="flex gap-2"><AlertTriangle size={16} className="shrink-0 mt-0.5" />{p}</li>)}</ul>
+              </>}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function Budget() {
+  const [mode, setMode] = useState('rec')
+  const s = SCENARIOS[mode]
+  const total = s.items.reduce((a, [, v]) => a + v, 0)
+  return (
+    <section id="budget" className="grid-bg bg-white py-24">
+      <div className="max-w-5xl mx-auto px-6">
+        <h2 className="font-display text-6xl md:text-8xl">2027 budget summary & <Highlight>SCENARIO</Highlight> toggle</h2>
+        <div className="mt-10 inline-flex border border-[#171e19]/15 no-print">
+          {Object.entries(SCENARIOS).map(([k, v]) => (
+            <button key={k} onClick={() => setMode(k)}
+              className={`px-6 py-3 font-bold text-sm ${mode === k ? 'bg-[#171e19] text-[#ffe17c]' : 'bg-white hover:bg-[#ffe17c]/40'}`}>
+              {v.label}
+            </button>
+          ))}
+        </div>
+        <div className="mt-6 border border-[#171e19]/15 bg-white">
+          {s.items.map(([n, v]) => (
+            <div key={n} className="flex justify-between gap-4 p-4 border-b border-[#171e19]/15">
+              <span className={v === 0 ? 'text-[#272727]/60 italic' : ''}>{n}</span>
+              <span className="font-mono font-bold whitespace-nowrap">{rm(v)}</span>
+            </div>
+          ))}
+          <div className="flex justify-between items-center p-6 bg-[#171e19] text-white">
+            <span className="font-display text-3xl">Total</span>
+            <span className="font-mono text-3xl font-bold text-[#ffe17c]">{rm(total)}</span>
+          </div>
+        </div>
+        <p className="mt-4 flex gap-2 items-center font-medium">
+          {mode === 'rec' ? <Shield size={18} /> : <AlertTriangle size={18} />} {s.note}
+        </p>
+        <div className="mt-10 flex flex-wrap gap-4 no-print">
+          <button onClick={() => window.print()}
+            className="bg-[#ffe17c] text-[#171e19] font-bold px-6 py-4 border border-[#171e19] hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_#171e19] inline-flex items-center gap-2">
+            <Download size={18} /> Download Executive PDF Summary
+          </button>
+          <a href="mailto:?subject=Q1%202027%20Planning%20Sync%20-%20Sales%20%26%20DM&body=Let%27s%20schedule%20the%20Q1%20planning%20sync."
+            className="border-2 border-[#171e19] text-[#171e19] font-bold px-6 py-4 hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_#ffe17c] inline-flex items-center gap-2">
+            <Calendar size={18} /> Schedule Q1 Planning Sync with Sales & DM
+          </a>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default function App() {
+  return (
+    <>
+      <Header />
+      <Hero />
+      <Foundation />
+      <Roadmap />
+      <Hardware />
+      <Tooling />
+      <Budget />
+      <footer className="bg-[#171e19] text-[#b7c6c2] font-mono text-xs p-8 text-center">
+        SWE GROWTH ENGINE // 2027 — KLAESB · KLAE PLT · 2R · JoA Automation · Perfect Automation · Ex Team
+      </footer>
+    </>
+  )
+}
