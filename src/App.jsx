@@ -163,7 +163,7 @@ const SCENARIOS = {
     items: [
       ['Synology DS925+ with 2x 8TB HDD (RAID 1 Redundancy)', 8290],
       ['16GB ECC RAM Upgrade', 480],
-      ['Dual Monitors (MSI 27" + MSI 24.5" + Arm)', 898.2],
+      ['Dual Monitors (MSI 27" + MSI 24.5")', 748.2],
       ['ChatGPT Plus Subscription', 1044],
       ['SEO Tool (Mangools / Ubersuggest)', 1514],
       ['KL Host Web Hosting – 7 sites (existing renewal)', 2310],
@@ -179,7 +179,7 @@ const SCENARIOS = {
     items: [
       ['Synology DS925+ with 1x 8TB HDD (no RAID 1)', 6195],
       ['16GB ECC RAM Upgrade', 480],
-      ['Dual Monitors (MSI 27" + MSI 24.5" + Arm)', 898.2],
+      ['Dual Monitors (MSI 27" + MSI 24.5")', 748.2],
       ['ChatGPT Plus Subscription', 1044],
       ['SEO Tool (deferred to free Google tools)', 0],
       ['KL Host Web Hosting – 7 sites (existing renewal)', 2310],
@@ -407,7 +407,7 @@ function Hardware() {
           </div>
           <div className="lift border border-[#171e19]/15 p-8 bg-[#ffe17c]/30">
             <Tag>Option B // Recommended</Tag>
-            <h4 className="font-display text-4xl mt-3">Dual display <span className="font-mono text-2xl">RM 898.20</span></h4>
+            <h4 className="font-display text-4xl mt-3">Dual display <span className="font-mono text-2xl">RM 748.20</span></h4>
             <div className="mt-4 font-mono text-sm space-y-2">
               <p>
                 <a className="underline decoration-[#171e19] underline-offset-4" href="https://s.shopee.com.my/qk4kRpuNz?share_channel_code=1" target="_blank" rel="noreferrer">MSI PRO MP275 27" FHD 100Hz IPS (3YW)</a>: RM 399
@@ -415,8 +415,8 @@ function Hardware() {
               <p>
                 <a className="underline decoration-[#171e19] underline-offset-4" href="https://s.shopee.com.my/BUNxAU5KJ?share_channel_code=1" target="_blank" rel="noreferrer">MSI PRO MP251 E14L 24.5" FHD 144Hz IPS (3YW)</a>: RM 349.20
               </p>
-              <p>Dual Monitor Arm: RM 150</p>
-              <p className="text-xs">Shopee website prices. Mobile app prices are lower (RM 311 + RM 290), i.e. RM 751 total with arm.</p>
+              <p>Stock stands only, no monitor arm: easy to pack and move if the office relocates</p>
+              <p className="text-xs">Shopee website prices. Mobile app prices are lower (RM 311 + RM 290), i.e. RM 601 total.</p>
             </div>
             <p className="mt-3"><Monitor className="inline mr-2" size={18} /><strong>Recovers ~20 mins/day</strong> of context-switching, enabling instant code-inspect comparison, side-by-side terminal logs and immediate responsive testing. Saves ~75 hours per year (20 mins × ~230 working days) across 6 company websites.</p>
           </div>
