@@ -36,7 +36,7 @@ const SALES_QUARTERS = {
   Q1: {
     title: 'Technical SEO & Conversion Engine', range: 'Jan – Mar 2027',
     milestones: [
-      'Google Search Console, GA4, Microsoft Clarity & Meta Pixel rolled out to the remaining 5 sites (already live on klae-plt.com)',
+      'Google Search Console, GA4, Microsoft Clarity & Meta Pixel rolled out to the remaining 6 sites (already live on klae-plt.com)',
       'Core Web Vitals score > 90 (image optimisation, WebP)',
       'Schema Markup (LocalBusiness, Product, Organization) extended to all sites (already live on klae-plt.com)',
       'klae-plt.com/shop checkout optimisation',
@@ -78,28 +78,30 @@ const SALES_QUARTERS = {
 
 const OPS_QUARTERS = {
   Q1: {
-    title: 'Compliance Tracker & IT Asset Register', range: 'Jan – Mar 2027',
+    title: 'Compliance Tracker & Expiry Alerts', range: 'Jan – Mar 2027',
     milestones: [
-      'Licence & certificate expiry tracker (DOSH, CIDB, ST, insurance, domains, SSL) with email alerts 60 and 30 days before expiry',
-      'IT asset & software licence register (laptops, licences, who holds what)',
-      'Uptime monitoring for all 6 sites & internal systems (Uptime Kuma in Docker on the NAS)',
+      'Company licence & certificate tracker in KLAE Group Portal (DOSH, CIDB, ST, insurance, domains, SSL) with email alerts 60 and 30 days before expiry',
+      'Staff certificate expiry on the same engine (CIDB green card, NIOSH, safety passport), linked to each staff profile',
+      'Email alerts for asset warranty & software licence expiry (asset register already live in the portal; alerts are on-screen only today)',
+      'Uptime monitoring for all 7 sites & internal systems (Uptime Kuma in Docker on the NAS)',
     ],
-    synergy: 'No company in the group misses a renewal, and IT knows exactly what it owns.',
-    kpis: ['100% of group licences & certificates registered', '0 missed renewals', 'Downtime alert < 5 minutes'],
+    synergy: 'No company or staff member misses a renewal, and nobody has to remember to check.',
+    kpis: ['100% of group & staff certificates registered', '0 missed renewals', 'Downtime alert < 5 minutes'],
   },
   Q2: {
-    title: 'Quotation Generator & Stock Sync', range: 'Apr – Jun 2027',
+    title: 'AutoCount Link & Quotation Generator', range: 'Apr – Jun 2027',
     milestones: [
-      'Group quotation generator: shared product/service catalogue, auto quote numbering, approval flow, PDF output',
+      'Read-only AutoCount connector: customer & item master synced hourly into the portal (no writes to accounting data)',
+      'Group quotation generator replacing Excel quotes: AutoCount customers & items, auto quote numbering, approval flow, branded PDF per company',
       'Shopee ↔ klae-plt.com/shop stock sync (currently manual)',
     ],
-    synergy: 'Consistent, faster quotes across every company; online stock stays accurate without double entry.',
-    kpis: ['Standard quote prepared in < 15 minutes', '0 manual stock updates between Shopee and the shop'],
+    synergy: 'Sales stops retyping customers and prices into Excel; every quote is numbered, approved and traceable.',
+    kpis: ['Excel quotations retired across all companies', 'Standard quote prepared in < 15 minutes', '0 manual stock updates between Shopee and the shop'],
   },
   Q3: {
     title: 'Field Service Reports & Training e-Certificates', range: 'Jul – Sep 2027',
     milestones: [
-      'Digital service report for technicians (mobile PWA: photos, checklist, customer signature, auto PDF)',
+      'Digital service report for technicians (mobile PWA: AutoCount customer list, photos, checklist, customer signature, auto PDF)',
       'KLAE PLT e-certificates with QR verification, participant registration, attendance & HRD Corp claim documents',
     ],
     synergy: 'Paper forms replaced; customers get a signed report on the spot and trainees get verifiable certificates the same day.',
@@ -108,11 +110,11 @@ const OPS_QUARTERS = {
   Q4: {
     title: 'Group Dashboard & Handover Readiness', range: 'Oct – Dec 2027',
     milestones: [
-      'Management dashboard for the whole group (web leads, project status, site uptime)',
+      'Director dashboard in the portal: revenue & outstanding invoices per company from AutoCount, web leads, site uptime',
       'System documentation & handover runbooks for every internal system',
     ],
-    synergy: 'Management sees the whole group on one screen; systems no longer depend on a single person.',
-    kpis: ['1 consolidated dashboard live for management', '100% of internal systems documented'],
+    synergy: 'Directors see every company on one screen; systems no longer depend on a single person.',
+    kpis: ['Revenue per company refreshed hourly from AutoCount', '1 consolidated dashboard live for directors', '100% of internal systems documented'],
   },
 }
 
@@ -305,7 +307,7 @@ function Roadmap() {
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="font-display text-6xl md:text-8xl">2027 Milestones: <Highlight>SWE x KLAE GROUP</Highlight> impact</h2>
         <p className="mt-6 max-w-3xl text-lg text-[#b7c6c2]">
-          Two parallel tracks: a Sales Engine that brings in leads, and Group Operations systems that cut manual work across every company.
+          Two parallel tracks: a Sales Engine that brings in leads, and Group Operations modules built into the existing KLAE Group Portal (leave, claims, tickets, assets and bookings already live) to cut manual work across all 7 companies.
         </p>
         <div className="mt-6 flex flex-wrap gap-x-8 gap-y-2 font-mono text-sm">
           <span className="text-[#b7c6c2]">CAPACITY SPLIT (1 DEVELOPER):</span>
@@ -373,7 +375,7 @@ function Hardware() {
 
         <div className="mt-8 bg-[#171e19] text-white p-8 border-l-8 border-[#ffe17c] flex gap-4">
           <AlertTriangle className="text-[#ffe17c] shrink-0" size={28} />
-          <p><strong className="text-[#ffe17c]">Why RAM runs high on the current test NAS:</strong> Running Active Backup for Business + Synology Drive indexing + Docker Container Manager (running dev/staging web databases for 6 entities) exhausts 4GB immediately. The DS925+ ships with the same 4GB, so adding a 16GB DDR4 ECC RAM stick (<span className="font-mono">~RM480</span>) on day one brings total capacity to 20GB, completely eliminating memory swap throttling.</p>
+          <p><strong className="text-[#ffe17c]">Why RAM runs high on the current test NAS:</strong> Running Active Backup for Business + Synology Drive indexing + Docker Container Manager (running dev/staging web databases for 7 entities) exhausts 4GB immediately. The DS925+ ships with the same 4GB, so adding a 16GB DDR4 ECC RAM stick (<span className="font-mono">~RM480</span>) on day one brings total capacity to 20GB, completely eliminating memory swap throttling.</p>
         </div>
 
         <h4 className="font-mono text-sm mt-12 mb-4">// VENDOR COMPARISON</h4>
@@ -418,7 +420,7 @@ function Hardware() {
               <p>Stock stands only, no monitor arm: easy to pack and move if the office relocates</p>
               <p className="text-xs">Shopee website prices. Mobile app prices are lower (RM 311 + RM 290), i.e. RM 601 total.</p>
             </div>
-            <p className="mt-3"><Monitor className="inline mr-2" size={18} /><strong>Recovers ~20 mins/day</strong> of context-switching, enabling instant code-inspect comparison, side-by-side terminal logs and immediate responsive testing. Saves ~75 hours per year (20 mins × ~230 working days) across 6 company websites.</p>
+            <p className="mt-3"><Monitor className="inline mr-2" size={18} /><strong>Recovers ~20 mins/day</strong> of context-switching, enabling instant code-inspect comparison, side-by-side terminal logs and immediate responsive testing. Saves ~75 hours per year (20 mins × ~230 working days) across 7 company websites.</p>
           </div>
         </div>
       </div>
@@ -518,7 +520,7 @@ export default function App() {
       <Tooling />
       <Budget />
       <footer className="bg-[#171e19] text-[#b7c6c2] font-mono text-xs p-8 text-center">
-        SWE GROWTH ENGINE // 2027 — KLAESB · KLAE PLT · 2R · JoA Automation · Perfect Automation · Ex Team
+        SWE GROWTH ENGINE // 2027 — KLAESB · KLAE PLT · CMK Automation · 2R · JoA Automation · Perfect Automation · Ex Team
       </footer>
     </>
   )
