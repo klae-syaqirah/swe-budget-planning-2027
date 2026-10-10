@@ -89,10 +89,10 @@ const OPS_QUARTERS = {
     kpis: ['100% of group & staff certificates registered', '0 missed renewals', 'Downtime alert < 5 minutes'],
   },
   Q2: {
-    title: 'AutoCount Link & Quotation Generator', range: 'Apr – Jun 2027',
+    title: 'Quotation Generator & Shared Customer List', range: 'Apr – Jun 2027',
     milestones: [
-      'Read-only AutoCount connector: customer & item master synced hourly into the portal (no writes to accounting data)',
-      'Group quotation generator replacing Excel quotes: AutoCount customers & items, auto quote numbering, approval flow, branded PDF per company',
+      'Shared customer & product/service catalogue in the portal, one list for all 7 companies',
+      'Group quotation generator replacing Excel quotes: auto quote numbering, approval flow, branded PDF per company',
       'Shopee ↔ klae-plt.com/shop stock sync (currently manual)',
     ],
     synergy: 'Sales stops retyping customers and prices into Excel; every quote is numbered, approved and traceable.',
@@ -101,7 +101,7 @@ const OPS_QUARTERS = {
   Q3: {
     title: 'Field Service Reports & Training e-Certificates', range: 'Jul – Sep 2027',
     milestones: [
-      'Digital service report for technicians (mobile PWA: AutoCount customer list, photos, checklist, customer signature, auto PDF)',
+      'Digital service report for technicians (mobile PWA: shared customer list, photos, checklist, customer signature, auto PDF)',
       'KLAE PLT e-certificates with QR verification, participant registration, attendance & HRD Corp claim documents',
     ],
     synergy: 'Paper forms replaced; customers get a signed report on the spot and trainees get verifiable certificates the same day.',
@@ -110,11 +110,11 @@ const OPS_QUARTERS = {
   Q4: {
     title: 'Group Dashboard & Handover Readiness', range: 'Oct – Dec 2027',
     milestones: [
-      'Director dashboard in the portal: revenue & outstanding invoices per company from AutoCount, web leads, site uptime',
+      'Director dashboard in the portal: quotations issued & won per company, web leads, site uptime',
       'System documentation & handover runbooks for every internal system',
     ],
     synergy: 'Directors see every company on one screen; systems no longer depend on a single person.',
-    kpis: ['Revenue per company refreshed hourly from AutoCount', '1 consolidated dashboard live for directors', '100% of internal systems documented'],
+    kpis: ['Quotation pipeline value per company visible live', '1 consolidated dashboard live for directors', '100% of internal systems documented'],
   },
 }
 
