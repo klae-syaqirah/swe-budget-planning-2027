@@ -32,7 +32,7 @@ const TIMELINE = [
   { name: 'Site Cleanup & Final Fine-Tuning', url: null, dates: '21 Dec – 31 Dec 2026', tag: 'Code Cleanup, Caching & Speed Tuning', entity: 'All', month: 'Dec' },
 ]
 
-const QUARTERS = {
+const SALES_QUARTERS = {
   Q1: {
     title: 'Technical SEO & Conversion Engine', range: 'Jan – Mar 2027',
     milestones: [
@@ -69,11 +69,59 @@ const QUARTERS = {
       'Scheduled automated backup/restore drills via Synology DS925+',
       'Annual SEO keyword audit vs competitors',
       'Dependency security upgrades (Next.js, PHP, Node.js) & SSL tuning',
+      'Offsite cloud backup of critical NAS data (3-2-1 rule: RAID alone is not a backup)',
     ],
     synergy: 'Full web-traffic-to-sales attribution report for management.',
     kpis: ['99.9% web uptime', '0 data loss incidents', 'Complete sales attribution report delivered'],
   },
 }
+
+const OPS_QUARTERS = {
+  Q1: {
+    title: 'Compliance Tracker & IT Asset Register', range: 'Jan – Mar 2027',
+    milestones: [
+      'Licence & certificate expiry tracker (DOSH, CIDB, ST, insurance, domains, SSL) with email alerts 60 and 30 days before expiry',
+      'IT asset & software licence register (laptops, licences, who holds what)',
+      'Uptime monitoring for all 6 sites & internal systems (Uptime Kuma in Docker on the NAS)',
+    ],
+    synergy: 'No company in the group misses a renewal, and IT knows exactly what it owns.',
+    kpis: ['100% of group licences & certificates registered', '0 missed renewals', 'Downtime alert < 5 minutes'],
+  },
+  Q2: {
+    title: 'Quotation Generator & Stock Sync', range: 'Apr – Jun 2027',
+    milestones: [
+      'Group quotation generator: shared product/service catalogue, auto quote numbering, approval flow, PDF output',
+      'Shopee ↔ klae-plt.com/shop stock sync (currently manual)',
+    ],
+    synergy: 'Consistent, faster quotes across every company; online stock stays accurate without double entry.',
+    kpis: ['Standard quote prepared in < 15 minutes', '0 manual stock updates between Shopee and the shop'],
+  },
+  Q3: {
+    title: 'Field Service Reports & Training e-Certificates', range: 'Jul – Sep 2027',
+    milestones: [
+      'Digital service report for technicians (mobile PWA: photos, checklist, customer signature, auto PDF)',
+      'KLAE PLT e-certificates with QR verification, participant registration, attendance & HRD Corp claim documents',
+    ],
+    synergy: 'Paper forms replaced; customers get a signed report on the spot and trainees get verifiable certificates the same day.',
+    kpis: ['100% of field service jobs reported digitally', 'e-Certificates issued same day as training'],
+  },
+  Q4: {
+    title: 'Group Dashboard & Handover Readiness', range: 'Oct – Dec 2027',
+    milestones: [
+      'Management dashboard for the whole group (web leads, project status, site uptime)',
+      'System documentation & handover runbooks for every internal system',
+    ],
+    synergy: 'Management sees the whole group on one screen; systems no longer depend on a single person.',
+    kpis: ['1 consolidated dashboard live for management', '100% of internal systems documented'],
+  },
+}
+
+const TRACKS = {
+  sales: { label: 'Sales Engine', impact: '// SALES IMPACT', quarters: SALES_QUARTERS },
+  ops: { label: 'Group Operations', impact: '// GROUP IMPACT', quarters: OPS_QUARTERS },
+}
+
+const CAPACITY = [['50%', 'Sales Engine'], ['30%', 'Group Operations'], ['20%', 'Maintenance & support']]
 
 const SPECS = [
   [Cpu, 'CPU', 'Quad-core 2.2 GHz AMD Ryzen Embedded (8 Threads)'],
@@ -119,6 +167,8 @@ const SCENARIOS = {
       ['ChatGPT Plus Subscription', 1044],
       ['SEO Tool (Mangools / Ubersuggest)', 1514],
       ['Cloud, DNS & SSL Maintenance', 1200],
+      ['UPS for NAS (est., quote pending)', 700],
+      ['Offsite Cloud Backup (Backblaze B2 / Synology C2, est.)', 400],
     ],
     note: 'Full data redundancy. A single HDD failure costs zero data.',
   },
@@ -131,10 +181,17 @@ const SCENARIOS = {
       ['ChatGPT Plus Subscription', 1044],
       ['SEO Tool (deferred to free Google tools)', 0],
       ['Cloud, DNS & SSL Maintenance', 1200],
+      ['UPS for NAS (est., quote pending)', 700],
+      ['Offsite Cloud Backup (Backblaze B2 / Synology C2, est.)', 400],
     ],
-    note: 'Saves RM 3,609 but carries NO drive redundancy if the HDD fails.',
+    note: 'carries NO drive redundancy if the HDD fails. Offsite backup is the only copy of the data.',
   },
 }
+
+const CONTINGENCY = 0.1
+
+const subtotal = (items) => items.reduce((a, [, v]) => a + v, 0)
+const grandTotal = (items) => Math.round(subtotal(items) * (1 + CONTINGENCY) * 100) / 100
 
 const rm = (n) => 'RM ' + n.toLocaleString('en-MY', { minimumFractionDigits: Number.isInteger(n) ? 0 : 2, maximumFractionDigits: 2 })
 
@@ -235,14 +292,31 @@ function Foundation() {
 }
 
 function Roadmap() {
+  const [track, setTrack] = useState('sales')
   const [q, setQ] = useState('Q1')
-  const d = QUARTERS[q]
+  const t = TRACKS[track]
+  const d = t.quarters[q]
   return (
     <section id="roadmap" className="grid-bg bg-[#171e19] text-white py-24 border-y border-[#b7c6c2]/20">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="font-display text-6xl md:text-8xl">2027 Milestones: <Highlight>SWE x SALES</Highlight> impact</h2>
-        <div className="mt-12 flex flex-wrap gap-3">
-          {Object.keys(QUARTERS).map((k) => (
+        <h2 className="font-display text-6xl md:text-8xl">2027 Milestones: <Highlight>SWE x KLAE GROUP</Highlight> impact</h2>
+        <p className="mt-6 max-w-3xl text-lg text-[#b7c6c2]">
+          Two parallel tracks: a Sales Engine that brings in leads, and Group Operations systems that cut manual work across every company.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-x-8 gap-y-2 font-mono text-sm">
+          <span className="text-[#b7c6c2]">CAPACITY SPLIT (1 DEVELOPER):</span>
+          {CAPACITY.map(([pct, l]) => <span key={l}><span className="text-[#ffe17c] font-bold">{pct}</span> {l}</span>)}
+        </div>
+        <div className="mt-10 inline-flex border border-[#b7c6c2]/20">
+          {Object.entries(TRACKS).map(([k, v]) => (
+            <button key={k} onClick={() => setTrack(k)}
+              className={`px-6 py-3 font-bold text-sm ${track === k ? 'bg-[#ffe17c] text-[#171e19]' : 'bg-[#272727] hover:bg-[#ffe17c]/20'}`}>
+              {v.label}
+            </button>
+          ))}
+        </div>
+        <div className="mt-6 flex flex-wrap gap-3">
+          {Object.keys(t.quarters).map((k) => (
             <button key={k} onClick={() => setQ(k)}
               className={`font-display text-3xl px-8 py-3 border border-[#b7c6c2]/20 hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_#ffe17c] ${q === k ? 'bg-[#ffe17c] text-[#171e19]' : 'bg-[#272727]'}`}>
               {k}
@@ -260,7 +334,7 @@ function Roadmap() {
               ))}</ul>
             </div>
             <div>
-              <h4 className="font-mono text-xs text-[#b7c6c2] mb-3">// SALES IMPACT</h4>
+              <h4 className="font-mono text-xs text-[#b7c6c2] mb-3">{t.impact}</h4>
               <p className="text-lg">{d.synergy}</p>
             </div>
             <div>
@@ -317,6 +391,7 @@ function Hardware() {
           </table>
         </div>
         <p className="mt-4 text-sm"><strong>Potential corporate RFQ channels:</strong> {RFQ.join(' · ')}</p>
+        <p className="mt-2 text-sm"><strong>Also budgeted:</strong> a UPS so a power cut cannot corrupt the NAS mid-write, and offsite cloud backup of critical data. RAID 1 survives a drive failure, but not accidental deletion, ransomware or fire.</p>
 
         <h3 className="font-display text-4xl mt-20">Part B // Dual monitor setup (MSI 27" FHD + MSI 24.5" FHD)</h3>
         <div className="mt-6 grid md:grid-cols-2 gap-6">
@@ -379,7 +454,9 @@ function Tooling() {
 function Budget() {
   const [mode, setMode] = useState('rec')
   const s = SCENARIOS[mode]
-  const total = s.items.reduce((a, [, v]) => a + v, 0)
+  const sub = subtotal(s.items)
+  const total = grandTotal(s.items)
+  const saving = grandTotal(SCENARIOS.rec.items) - grandTotal(SCENARIOS.lean.items)
   return (
     <section id="budget" className="grid-bg bg-white py-24">
       <div className="max-w-5xl mx-auto px-6">
@@ -399,13 +476,17 @@ function Budget() {
               <span className="font-mono font-bold whitespace-nowrap">{rm(v)}</span>
             </div>
           ))}
+          <div className="flex justify-between gap-4 p-4 border-b border-[#171e19]/15 bg-[#b7c6c2]/20">
+            <span>Contingency ({CONTINGENCY * 100}% of {rm(sub)}): price changes, exchange rate, SST</span>
+            <span className="font-mono font-bold whitespace-nowrap">{rm(total - sub)}</span>
+          </div>
           <div className="flex justify-between items-center p-6 bg-[#171e19] text-white">
             <span className="font-display text-3xl">Total</span>
             <span className="font-mono text-3xl font-bold text-[#ffe17c]">{rm(total)}</span>
           </div>
         </div>
         <p className="mt-4 flex gap-2 items-center font-medium">
-          {mode === 'rec' ? <Shield size={18} /> : <AlertTriangle size={18} />} {s.note}
+          {mode === 'rec' ? <Shield size={18} /> : <AlertTriangle size={18} />} {mode === 'rec' ? s.note : `Saves ${rm(saving)} but ${s.note}`}
         </p>
         <div className="mt-10 flex flex-wrap gap-4 no-print">
           <button onClick={() => window.print()}
