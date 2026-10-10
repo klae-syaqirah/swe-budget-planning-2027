@@ -153,9 +153,9 @@ const TOOLS = [
     cons: [],
   },
   {
-    icon: Search, name: 'SEO Tracking & Search Intelligence', role: 'Mangools / Ubersuggest', price: '$29/month', annual: '~RM 1,514/year',
-    pros: ['Fraction of Semrush cost (RM 7,300/yr)', 'Tracks localised Google Malaysia rankings', 'Keyword difficulty & competitor backlink auditing'],
-    cons: ['Smaller backlink database than Ahrefs / Semrush enterprise'],
+    icon: Search, name: 'SEO & Search Intelligence', role: 'Free stack + 1-month Mangools / Ubersuggest', price: 'RM 0 day to day', annual: '~RM 130 once, for the Q4 audit',
+    pros: ['Search Console, GA4 & Clarity already cover rankings, traffic and on-site behaviour for free', 'Google Keyword Planner (free) for search volume on new keywords', 'One month of Mangools / Ubersuggest only for the annual competitor & backlink audit in Q4, then cancelled', 'Avoids a RM 1,514/year subscription (or RM 7,300/year for Semrush)'],
+    cons: ['No continuous competitor rank tracking between audits'],
   },
 ]
 
@@ -163,36 +163,42 @@ const SCENARIOS = {
   rec: {
     label: 'Recommended: High Reliability',
     items: [
-      ['Synology DS925+ with 2x 8TB HDD (RAID 1 Redundancy)', 8290],
-      ['16GB ECC RAM Upgrade', 480],
-      ['Dual Monitors (MSI 27" + MSI 24.5")', 748.2],
-      ['ChatGPT Plus Subscription', 1044],
-      ['SEO Tool (Mangools / Ubersuggest)', 1514],
-      ['KL Host Web Hosting – 7 sites (existing renewal)', 2310],
-      ['BillPlz Payment Gateway (existing renewal)', 150],
-      ['Cloud, DNS & SSL Maintenance', 1200],
-      ['UPS for NAS (est., quote pending)', 700],
-      ['Offsite Cloud Backup (Backblaze B2 / Synology C2, est.)', 400],
+      ['Synology DS925+ with 2x 8TB HDD (RAID 1 Redundancy)', 8290, 'asset'],
+      ['16GB ECC RAM Upgrade', 480, 'asset'],
+      ['Dual Monitors (MSI 27" + MSI 24.5")', 748.2, 'asset'],
+      ['ChatGPT Plus Subscription', 1044, 'monthly'],
+      ['SEO Tool – 1 month for Q4 competitor audit (Mangools / Ubersuggest)', 130, 'yearly'],
+      ['KL Host Web Hosting – 7 sites (existing renewal)', 2310, 'yearly'],
+      ['BillPlz Payment Gateway (existing renewal)', 150, 'yearly'],
+      ['Cloud, DNS & SSL Maintenance', 1200, 'yearly'],
+      ['UPS for NAS (est., pending IT check of existing server room UPS)', 500, 'asset'],
+      ['Offsite Cloud Backup (Backblaze B2 / Synology C2, est.)', 400, 'monthly'],
     ],
     note: 'Full data redundancy. A single HDD failure costs zero data.',
   },
   lean: {
     label: 'Lean Baseline',
     items: [
-      ['Synology DS925+ with 1x 8TB HDD (no RAID 1)', 6195],
-      ['16GB ECC RAM Upgrade', 480],
-      ['Dual Monitors (MSI 27" + MSI 24.5")', 748.2],
-      ['ChatGPT Plus Subscription', 1044],
-      ['SEO Tool (deferred to free Google tools)', 0],
-      ['KL Host Web Hosting – 7 sites (existing renewal)', 2310],
-      ['BillPlz Payment Gateway (existing renewal)', 150],
-      ['Cloud, DNS & SSL Maintenance', 1200],
-      ['UPS for NAS (est., quote pending)', 700],
-      ['Offsite Cloud Backup (Backblaze B2 / Synology C2, est.)', 400],
+      ['Synology DS925+ with 1x 8TB HDD (no RAID 1)', 6195, 'asset'],
+      ['16GB ECC RAM Upgrade', 480, 'asset'],
+      ['Dual Monitors (MSI 27" + MSI 24.5")', 748.2, 'asset'],
+      ['ChatGPT Plus Subscription', 1044, 'monthly'],
+      ['SEO Tool (Q4 audit with free Google tools only)', 0, 'yearly'],
+      ['KL Host Web Hosting – 7 sites (existing renewal)', 2310, 'yearly'],
+      ['BillPlz Payment Gateway (existing renewal)', 150, 'yearly'],
+      ['Cloud, DNS & SSL Maintenance', 1200, 'yearly'],
+      ['UPS for NAS (est., pending IT check of existing server room UPS)', 500, 'asset'],
+      ['Offsite Cloud Backup (Backblaze B2 / Synology C2, est.)', 400, 'monthly'],
     ],
     note: 'carries NO drive redundancy if the HDD fails. Offsite backup is the only copy of the data.',
   },
 }
+
+const CATEGORIES = [
+  { key: 'asset', label: 'Assets', hint: 'One-time purchase, owned by the company' },
+  { key: 'monthly', label: 'Monthly subscriptions', hint: 'Billed every month, shown as monthly × 12' },
+  { key: 'yearly', label: 'Yearly renewals', hint: 'One-off payment once a year' },
+]
 
 const CONTINGENCY = 0.1
 
@@ -397,7 +403,7 @@ function Hardware() {
           </table>
         </div>
         <p className="mt-4 text-sm"><strong>Potential corporate RFQ channels:</strong> {RFQ.join(' · ')}</p>
-        <p className="mt-2 text-sm"><strong>Also budgeted:</strong> a UPS so a power cut cannot corrupt the NAS mid-write, and offsite cloud backup of critical data. RAID 1 survives a drive failure, but not accidental deletion, ransomware or fire.</p>
+        <p className="mt-2 text-sm"><strong>Also budgeted:</strong> a UPS that signals the NAS to shut down cleanly on a power cut instead of crashing mid-write (the server room went down in the last blackout), and offsite cloud backup of critical data. RAID 1 survives a drive failure, but not accidental deletion, ransomware or fire.</p>
 
         <h3 className="font-display text-4xl mt-20">Part B // Dual monitor setup (MSI 27" FHD + MSI 24.5" FHD)</h3>
         <div className="mt-6 grid md:grid-cols-2 gap-6">
@@ -463,6 +469,8 @@ function Budget() {
   const sub = subtotal(s.items)
   const total = grandTotal(s.items)
   const saving = grandTotal(SCENARIOS.rec.items) - grandTotal(SCENARIOS.lean.items)
+  const byCat = (key) => s.items.filter(([, , c]) => c === key)
+  const recurring = subtotal(s.items.filter(([, , c]) => c !== 'asset'))
   return (
     <section id="budget" className="grid-bg bg-white py-24">
       <div className="max-w-5xl mx-auto px-6">
@@ -476,10 +484,21 @@ function Budget() {
           ))}
         </div>
         <div className="mt-6 border border-[#171e19]/15 bg-white">
-          {s.items.map(([n, v]) => (
-            <div key={n} className="flex justify-between gap-4 p-4 border-b border-[#171e19]/15">
-              <span className={v === 0 ? 'text-[#272727]/60 italic' : ''}>{n}</span>
-              <span className="font-mono font-bold whitespace-nowrap">{rm(v)}</span>
+          {CATEGORIES.map(({ key, label, hint }) => (
+            <div key={key}>
+              <div className="flex justify-between items-baseline gap-4 px-4 py-3 bg-[#171e19]/5 border-b border-[#171e19]/15">
+                <span><span className="font-mono text-xs font-bold uppercase">{label}</span> <span className="text-xs text-[#272727]/70">// {hint}</span></span>
+                <span className="font-mono text-sm font-bold whitespace-nowrap">{rm(subtotal(byCat(key)))}</span>
+              </div>
+              {byCat(key).map(([n, v]) => (
+                <div key={n} className="flex justify-between gap-4 p-4 border-b border-[#171e19]/15">
+                  <span className={v === 0 ? 'text-[#272727]/60 italic' : ''}>{n}</span>
+                  <span className="font-mono font-bold whitespace-nowrap text-right">
+                    {rm(v)}
+                    {key === 'monthly' && v > 0 && <span className="block text-xs font-normal text-[#272727]/70">{rm(Math.round(v / 12 * 100) / 100)}/mo × 12</span>}
+                  </span>
+                </div>
+              ))}
             </div>
           ))}
           <div className="flex justify-between gap-4 p-4 border-b border-[#171e19]/15 bg-[#b7c6c2]/20">
@@ -489,6 +508,16 @@ function Budget() {
           <div className="flex justify-between items-center p-6 bg-[#171e19] text-white">
             <span className="font-display text-3xl">Total</span>
             <span className="font-mono text-3xl font-bold text-[#ffe17c]">{rm(total)}</span>
+          </div>
+        </div>
+        <div className="mt-4 grid sm:grid-cols-2 gap-4 font-mono text-sm">
+          <div className="border border-[#171e19]/15 p-4">
+            <div className="text-xs text-[#272727]/70">ONE-TIME IN 2027 (ASSETS)</div>
+            <div className="font-bold text-lg">{rm(subtotal(byCat('asset')))}</div>
+          </div>
+          <div className="border border-[#171e19]/15 p-4">
+            <div className="text-xs text-[#272727]/70">RECURRING EVERY YEAR (MONTHLY + YEARLY)</div>
+            <div className="font-bold text-lg">{rm(recurring)} <span className="text-xs font-normal">carries into 2028</span></div>
           </div>
         </div>
         <p className="mt-4 flex gap-2 items-center font-medium">
