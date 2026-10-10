@@ -17,7 +17,7 @@ const NAV = [
 const KPIS = [
   { big: '5+', text: 'Websites rebuilt & fine-tuned by end of 2026', icon: TrendingUp },
   { big: '20GB', text: 'RAM NAS upgrade for zero-bottleneck Docker staging', icon: Cpu },
-  { big: '2X', text: 'Estimated velocity via Claude Pro engine', icon: Zap },
+  { big: '2X', text: 'Estimated coding velocity via ChatGPT Plus + Codex', icon: Zap },
 ]
 
 const TIMELINE = [
@@ -36,9 +36,9 @@ const QUARTERS = {
   Q1: {
     title: 'Technical SEO & Conversion Engine', range: 'Jan – Mar 2027',
     milestones: [
-      'Google Search Console, GA4 & Meta Pixel set up across all 5 sites',
+      'Google Search Console, GA4, Microsoft Clarity & Meta Pixel rolled out to the remaining 5 sites (already live on klae-plt.com)',
       'Core Web Vitals score > 90 (image optimisation, WebP)',
-      'Schema Markup (LocalBusiness, Product, Organization) implementation',
+      'Schema Markup (LocalBusiness, Product, Organization) extended to all sites (already live on klae-plt.com)',
       'klae-plt.com/shop checkout optimisation',
     ],
     synergy: 'Sales gets accurate tracking of where every lead comes from, plus search-ready pages.',
@@ -93,9 +93,9 @@ const RFQ = ['ALL IT Hypermarket B2B', 'TMT (Thunder Match) Corporate', 'Viewnet
 
 const TOOLS = [
   {
-    icon: Zap, name: 'Claude Pro', role: 'Primary AI Engine for SWE', price: '$20/month', annual: '~RM 1,044/year',
-    pros: ['Already used daily and fully utilised, proven value', 'Top-tier contextual understanding for complex multi-file Next.js & PHP refactoring', 'Architectural problem-solving', 'Rapid debugging'],
-    cons: ['Cloud-dependent', 'Requires clear prompt structuring'],
+    icon: Zap, name: 'ChatGPT Plus', role: 'Primary AI Engine for SWE', price: '$20/month', annual: '~RM 1,044/year',
+    pros: ['Codex coding agent (VS Code extension + CLI) for multi-file Next.js & PHP refactoring', 'Deep Research for vendor, pricing & tech comparisons', 'Custom GPTs for repeatable docs (website info sheets, SEO copy, reports)', 'Image generation for banners & page mockups'],
+    cons: ['Cloud-dependent: no credentials or customer data in prompts', '8% service tax on foreign digital services may apply'],
   },
   {
     icon: Shield, name: 'Cloud & Security', role: 'Cloudflare Maintenance', price: 'RM 0 free tier today', annual: 'Provision RM 1,200/year',
@@ -116,9 +116,8 @@ const SCENARIOS = {
       ['Synology DS925+ with 2x 8TB HDD (RAID 1 Redundancy)', 8290],
       ['16GB ECC RAM Upgrade', 480],
       ['Dual Monitors (MSI 27" + MSI 24.5" + Arm)', 898.2],
-      ['Claude Pro Subscription', 1044],
-      ['ChatGPT AI Support', 1044],
-      ['SEO Analytics Tool', 1514],
+      ['ChatGPT Plus Subscription', 1044],
+      ['SEO Tool (Mangools / Ubersuggest)', 1514],
       ['Cloud, DNS & SSL Maintenance', 1200],
     ],
     note: 'Full data redundancy. A single HDD failure costs zero data.',
@@ -129,10 +128,9 @@ const SCENARIOS = {
       ['Synology DS925+ with 1x 8TB HDD (no RAID 1)', 6195],
       ['16GB ECC RAM Upgrade', 480],
       ['Dual Monitors (MSI 27" + MSI 24.5" + Arm)', 898.2],
-      ['Claude Pro Subscription', 1044],
-      ['ChatGPT AI', 1044],
+      ['ChatGPT Plus Subscription', 1044],
       ['SEO Tool (deferred to free Google tools)', 0],
-      ['Cloud & DNS Maintenance', 1200],
+      ['Cloud, DNS & SSL Maintenance', 1200],
     ],
     note: 'Saves RM 3,609 but carries NO drive redundancy if the HDD fails.',
   },
@@ -229,7 +227,7 @@ function Foundation() {
         </div>
         <div className="mt-10 border border-[#171e19]/15 border-l-8 border-l-[#ffe17c] bg-[#b7c6c2]/20 p-6 flex gap-4">
           <CheckCircle className="shrink-0" />
-          <p><strong>Entity Clarity:</strong> KLAE PLT (Training portal & shop – completed and running) is operated independently from KLAESB (Main engineering portal – scheduled for Dec 2026 revamp).</p>
+          <p><strong>Entity Clarity:</strong> KLAE PLT (Training portal – live; online store at klae-plt.com/shop selling JoA & KLAESB products – Oct 2026) is operated independently from KLAESB (main corporate website – scheduled for Dec 2026 revamp).</p>
         </div>
       </div>
     </section>
@@ -297,7 +295,7 @@ function Hardware() {
 
         <div className="mt-8 bg-[#171e19] text-white p-8 border-l-8 border-[#ffe17c] flex gap-4">
           <AlertTriangle className="text-[#ffe17c] shrink-0" size={28} />
-          <p><strong className="text-[#ffe17c]">Why RAM runs high on the existing test NAS:</strong> Running Active Backup for Business + Synology Drive indexing + Docker Container Manager (running dev/staging web databases for 5 companies) exhausts 4GB immediately. Adding a 16GB DDR4 ECC RAM stick (<span className="font-mono">~RM480</span>) brings total capacity to 20GB, completely eliminating memory swap throttling.</p>
+          <p><strong className="text-[#ffe17c]">Why RAM runs high on the current test NAS:</strong> Running Active Backup for Business + Synology Drive indexing + Docker Container Manager (running dev/staging web databases for 6 entities) exhausts 4GB immediately. The DS925+ ships with the same 4GB, so adding a 16GB DDR4 ECC RAM stick (<span className="font-mono">~RM480</span>) on day one brings total capacity to 20GB, completely eliminating memory swap throttling.</p>
         </div>
 
         <h4 className="font-mono text-sm mt-12 mb-4">// VENDOR COMPARISON</h4>
@@ -326,7 +324,7 @@ function Hardware() {
             <Tag>Option A</Tag>
             <h4 className="font-display text-4xl mt-3">Single monitor (status quo)</h4>
             <p className="mt-4"><CheckCircle className="inline mr-2" size={18} /><strong>Pro:</strong> Low upfront cost.</p>
-            <p className="mt-2"><AlertTriangle className="inline mr-2" size={18} /><strong>Con:</strong> Extreme context-switching fatigue between IDE, terminal, browser DevTools, DBeaver and design assets. Loss of ~20 mins/day per developer.</p>
+            <p className="mt-2"><AlertTriangle className="inline mr-2" size={18} /><strong>Con:</strong> Extreme context-switching fatigue between IDE, terminal, browser DevTools, DBeaver and design assets. Loss of ~20 mins/day.</p>
           </div>
           <div className="lift border border-[#171e19]/15 p-8 bg-[#ffe17c]/30">
             <Tag>Option B // Recommended</Tag>
@@ -341,7 +339,7 @@ function Hardware() {
               <p>Dual Monitor Arm: RM 150</p>
               <p className="text-xs">Shopee website prices. Mobile app prices are lower (RM 311 + RM 290), i.e. RM 751 total with arm.</p>
             </div>
-            <p className="mt-3"><Monitor className="inline mr-2" size={18} /><strong>Boosts coding velocity by 30%</strong>, enabling instant code-inspect comparison, side-by-side terminal logs and immediate responsive testing. Saves 60+ hours per year across 5 company domains.</p>
+            <p className="mt-3"><Monitor className="inline mr-2" size={18} /><strong>Recovers ~20 mins/day</strong> of context-switching, enabling instant code-inspect comparison, side-by-side terminal logs and immediate responsive testing. Saves ~75 hours per year (20 mins × ~230 working days) across 6 company websites.</p>
           </div>
         </div>
       </div>
