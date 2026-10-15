@@ -3,6 +3,7 @@ import {
   Server, Cpu, Monitor, Zap, Shield, Search, TrendingUp, CheckCircle,
   AlertTriangle, ExternalLink, Calendar, Download, MemoryStick, Network,
 } from 'lucide-react'
+import { SCENARIOS, CATEGORIES, CONTINGENCY, subtotal, grandTotal, rm } from './data.js'
 
 /* ----------------------------- MOCK DATA ----------------------------- */
 
@@ -159,54 +160,6 @@ const TOOLS = [
   },
 ]
 
-const SCENARIOS = {
-  rec: {
-    label: 'Recommended: High Reliability',
-    items: [
-      ['Synology DS925+ with 2x 8TB HDD (RAID 1 Redundancy)', 8290, 'asset'],
-      ['16GB ECC RAM Upgrade', 480, 'asset'],
-      ['Dual Monitors (MSI 27" + MSI 24.5")', 748.2, 'asset'],
-      ['ChatGPT Plus Subscription', 1044, 'monthly'],
-      ['SEO Tool – 1 month for Q4 competitor audit (Mangools / Ubersuggest)', 130, 'yearly'],
-      ['KL Host Web Hosting – 7 sites (existing renewal)', 2310, 'yearly'],
-      ['BillPlz Payment Gateway (existing renewal)', 150, 'yearly'],
-      ['Cloud, DNS & SSL Maintenance', 1200, 'yearly'],
-      ['UPS for NAS (est., pending IT check of existing server room UPS)', 700, 'asset'],
-      ['Offsite Cloud Backup (Backblaze B2 / Synology C2, est.)', 400, 'monthly'],
-    ],
-    note: 'Full data redundancy. A single HDD failure costs zero data.',
-  },
-  lean: {
-    label: 'Lean Baseline',
-    items: [
-      ['Synology DS925+ with 1x 8TB HDD (no RAID 1)', 6195, 'asset'],
-      ['16GB ECC RAM Upgrade', 480, 'asset'],
-      ['Dual Monitors (MSI 27" + MSI 24.5")', 748.2, 'asset'],
-      ['ChatGPT Plus Subscription', 1044, 'monthly'],
-      ['SEO Tool (Q4 audit with free Google tools only)', 0, 'yearly'],
-      ['KL Host Web Hosting – 7 sites (existing renewal)', 2310, 'yearly'],
-      ['BillPlz Payment Gateway (existing renewal)', 150, 'yearly'],
-      ['Cloud, DNS & SSL Maintenance', 1200, 'yearly'],
-      ['UPS for NAS (est., pending IT check of existing server room UPS)', 700, 'asset'],
-      ['Offsite Cloud Backup (Backblaze B2 / Synology C2, est.)', 400, 'monthly'],
-    ],
-    note: 'carries NO drive redundancy if the HDD fails. Offsite backup is the only copy of the data.',
-  },
-}
-
-const CATEGORIES = [
-  { key: 'asset', label: 'Assets', hint: 'One-time purchase, owned by the company' },
-  { key: 'monthly', label: 'Monthly subscriptions', hint: 'Billed every month, shown as monthly × 12' },
-  { key: 'yearly', label: 'Yearly renewals', hint: 'One-off payment once a year' },
-]
-
-const CONTINGENCY = 0.1
-
-const subtotal = (items) => items.reduce((a, [, v]) => a + v, 0)
-const grandTotal = (items) => Math.round(subtotal(items) * (1 + CONTINGENCY) * 100) / 100
-
-const rm = (n) => 'RM ' + n.toLocaleString('en-MY', { minimumFractionDigits: Number.isInteger(n) ? 0 : 2, maximumFractionDigits: 2 })
-
 /* ----------------------------- COMPONENTS ----------------------------- */
 
 const Highlight = ({ children }) => (
@@ -227,9 +180,14 @@ function Header() {
             <a key={h} href={h} className="text-[#b7c6c2] hover:text-[#ffe17c]">[{l}]</a>
           ))}
         </div>
-        <span className="hidden md:block bg-[#ffe17c] text-[#171e19] font-mono text-xs font-bold px-3 py-2 whitespace-nowrap">
-          STATUS: READY FOR Q1 EXECUTION
-        </span>
+        <div className="flex items-center gap-3">
+          <span className="hidden 2xl:block border border-[#ffe17c] text-[#ffe17c] font-mono text-xs font-bold px-3 py-2 whitespace-nowrap">
+            STATUS: READY FOR Q1 EXECUTION
+          </span>
+          <a href="slides.html" className="bg-[#ffe17c] text-[#171e19] font-mono text-xs font-bold px-3 py-2 whitespace-nowrap hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_#b7c6c2]">
+            ▶ VIEW AS SLIDES
+          </a>
+        </div>
       </div>
     </nav>
   )
@@ -403,7 +361,7 @@ function Hardware() {
           </table>
         </div>
         <p className="mt-4 text-sm"><strong>Potential corporate RFQ channels:</strong> {RFQ.join(' · ')}</p>
-        <p className="mt-2 text-sm"><strong>Also budgeted:</strong> a UPS that signals the NAS to shut down cleanly on a power cut instead of crashing mid-write (the server room went down in the last blackout), and offsite cloud backup of critical data. RAID 1 survives a drive failure, but not accidental deletion, ransomware or fire.</p>
+        <p className="mt-2 text-sm"><strong>Also budgeted:</strong> offsite cloud backup of critical data. RAID 1 survives a drive failure, but not accidental deletion, ransomware or fire. A UPS for the NAS falls under the Infrastructure budget and is not included here.</p>
 
         <h3 className="font-display text-4xl mt-20">Part B // Dual monitor setup (MSI 27" FHD + MSI 24.5" FHD)</h3>
         <div className="mt-6 grid md:grid-cols-2 gap-6">

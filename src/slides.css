@@ -1,0 +1,16 @@
+/* Presentation page only: every slide is a fixed 1280×720 canvas (16:9) */
+
+.slide {
+  position: relative;
+  width: 1280px;
+  height: 720px;
+  overflow: hidden;
+}
+
+@media print {
+  /* One slide per landscape page, no browser margins, headers or footers */
+  @page { size: 1280px 720px; margin: 0; }
+  html, body { margin: 0; background: #171e19; }
+  .print-deck .slide { break-after: page; }
+  .print-deck .slide:last-child { break-after: auto; }
+}
