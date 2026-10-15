@@ -11,9 +11,8 @@ const SITES = 7
 const REC = SCENARIOS.rec.items
 const price = (prefix) => REC.find(([n]) => n.startsWith(prefix))[1]
 
-// Group renewals split evenly across the 7 company websites
+// Hosting renewal split evenly across the 7 company websites
 const HOSTING = Math.round(price('KL Host') / SITES)
-const CLOUD = Math.round(price('Cloud, DNS') / SITES)
 const BILLPLZ = price('BillPlz')
 const NAS = price('Synology DS925+')
 const RAM = price('16GB')
@@ -53,12 +52,8 @@ const COMPANIES = [
   },
   {
     name: 'CMK Automation', url: null,
-    y26: [
-      ['Ongoing', 'Website hosted & running on KL Host'],
-      ['Q4 2026', 'Not in the Oct–Dec 2026 revamp schedule'],
-      CLEANUP,
-    ],
-    y27: [['Q1', 'Bring the site to group standard: mobile layout, WebP images, Core Web Vitals above 90'], TRACKING, CMS, FORMS, LANDING, AUDIT],
+    y26: [['Q4 2026', 'Full website revamp'], CLEANUP],
+    y27: STANDARD,
   },
   {
     name: 'JoA Automation', url: 'joautomation.com',
@@ -236,7 +231,7 @@ function Cover() {
 }
 
 function Company({ c, n }) {
-  const yearly = HOSTING + CLOUD + (c.extra || []).reduce((a, [, v]) => a + v, 0)
+  const yearly = HOSTING + (c.extra || []).reduce((a, [, v]) => a + v, 0)
   return (
     <Frame>
       <Head eyebrow={`COMPANY WEBSITE · ${n} / ${COMPANIES.length}`} title={c.name} pill={c.url || '[CMK website URL]'} />
@@ -250,7 +245,7 @@ function Company({ c, n }) {
       </div>
       <BudgetStrip
         label={['2027 BUDGET', 'Yearly, per company']}
-        items={[['Hosting (KL Host)', HOSTING], ['Cloud, DNS & SSL', CLOUD], ...(c.extra || [])]}
+        items={[['Hosting (KL Host)', HOSTING], ...(c.extra || [])]}
         total={rm(yearly)}
         totalNote="PER YEAR · RECURRING"
       />
@@ -293,19 +288,23 @@ function HrPortal() {
 function SalesPortal() {
   return (
     <Frame theme="dark">
-      <Head theme="dark" eyebrow="INTERNAL SYSTEM · 2 / 2" title="KLAE Group Sales Portal" />
+      <Head theme="dark" eyebrow="INTERNAL SYSTEM · 2 / 2" title="KLAE Group Sales Portal" pill="share-contact.klaesb.com" />
       <div className="grid grid-cols-2 gap-4 flex-1 min-h-0">
-        <YearCard year="2026" label="PHASE 2" variant="deep" footer="Base in place for the 2027 sales modules.">
-          <Groups groups={[['Phase 2 · Nov 2026', ['Booking', 'OBR requisition', 'Ticketing']]]} />
+        <YearCard year="2026" label="SHARE CONTACT (vCARD)" variant="deep" footer="One digital card per staff, for all KLAE Group companies.">
+          <Groups groups={[['Live · 12–23 Oct 2026', [
+            'Digital business card (vCard) for KLAE Group staff',
+            'Customers save the contact straight to their phone',
+            'Lead capture & routing to the right company',
+          ]]]} />
         </YearCard>
-        <YearCard year="2027" label="THE PLAN" variant="paper" footer="Targets: Excel quotations retired · standard quote ready in < 15 minutes">
+        <YearCard year="2027" label="PROPOSED PLAN" variant="paper" footer="Targets: every sales staff on a digital card · new leads reach the salesperson in < 2 minutes">
           <Rows variant="paper" tagWidth={44} rows={[
-            ['Q2', 'Shared customer & product catalogue: one list for all 7 companies'],
-            ['Q2', 'Quotation generator replacing Excel: auto numbering, approval flow, branded PDF per company'],
-            ['Q3', 'Field service reports on mobile: photos, checklist, customer signature, auto PDF'],
-            ['Q4', 'Director dashboard: quotations issued & won per company, web leads'],
-            ['NEW', 'Follow-up reminders for open quotations'],
-            ['NEW', 'Sales pipeline view: lead → quote → won / lost'],
+            ['Q1', 'Card analytics: how many customers viewed and saved each staff card'],
+            ['Q2', 'Website quote forms sent to the right salesperson + WhatsApp alert'],
+            ['Q2', 'Two-way exchange: customer leaves their details on the card, the lead lands with the salesperson'],
+            ['Q3', 'QR codes for printed name cards, brochures & exhibition booths'],
+            ['Q3', 'Save the card to Apple Wallet / Google Wallet'],
+            ['Q4', 'Leads saved into the shared customer list in the Group Portal'],
           ]} />
         </YearCard>
       </div>

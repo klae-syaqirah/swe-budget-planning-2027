@@ -70,7 +70,6 @@ const SALES_QUARTERS = {
       'Scheduled automated backup/restore drills via Synology DS925+',
       'Annual SEO keyword audit vs competitors',
       'Dependency security upgrades (Next.js, PHP, Node.js) & SSL tuning',
-      'Offsite cloud backup of critical NAS data (3-2-1 rule: RAID alone is not a backup)',
     ],
     synergy: 'Full web-traffic-to-sales attribution report for management.',
     kpis: ['99.9% web uptime', '0 data loss incidents', 'Complete sales attribution report delivered'],
@@ -149,8 +148,8 @@ const TOOLS = [
     cons: ['Cloud-dependent: no credentials or customer data in prompts', '8% service tax on foreign digital services may apply'],
   },
   {
-    icon: Shield, name: 'Cloud & Security', role: 'Cloudflare Maintenance', price: 'RM 0 free tier today', annual: 'Provision RM 1,200/year',
-    pros: ['DDoS mitigation', 'Ultra-fast CDN caching', 'RM 0 at present tier (2 internal systems)', 'Budget covers enterprise domain SSL & DNS resilience for all active sites'],
+    icon: Shield, name: 'Cloud & Security', role: 'Cloudflare Maintenance', price: 'RM 0 free tier today', annual: 'RM 0/year, no budget needed',
+    pros: ['DDoS mitigation', 'Ultra-fast CDN caching', 'Free SSL certificates & DNS', 'RM 0 at present tier (2 internal systems)'],
     cons: [],
   },
   {
@@ -361,7 +360,7 @@ function Hardware() {
           </table>
         </div>
         <p className="mt-4 text-sm"><strong>Potential corporate RFQ channels:</strong> {RFQ.join(' · ')}</p>
-        <p className="mt-2 text-sm"><strong>Also budgeted:</strong> offsite cloud backup of critical data. RAID 1 survives a drive failure, but not accidental deletion, ransomware or fire. A UPS for the NAS falls under the Infrastructure budget and is not included here.</p>
+        <p className="mt-2 text-sm"><strong>Note:</strong> RAID 1 survives a drive failure, but not accidental deletion, ransomware or fire. A UPS for the NAS falls under the Infrastructure budget and is not included here.</p>
 
         <h3 className="font-display text-4xl mt-20">Part B // Dual monitor setup (MSI 27" FHD + MSI 24.5" FHD)</h3>
         <div className="mt-6 grid md:grid-cols-2 gap-6">

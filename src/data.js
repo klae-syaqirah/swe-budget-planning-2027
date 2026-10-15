@@ -12,8 +12,6 @@ export const SCENARIOS = {
       ['SEO Tool – 1 month for Q4 competitor audit (Mangools / Ubersuggest)', 130, 'yearly', 'SEO tool, 1 month for the Q4 audit'],
       ['KL Host Web Hosting – 7 sites (existing renewal)', 2310, 'yearly', 'Web hosting, 7 sites (KL Host)'],
       ['BillPlz Payment Gateway (existing renewal)', 150, 'yearly', 'BillPlz payment gateway (KLAE PLT)'],
-      ['Cloud, DNS & SSL Maintenance', 1200, 'yearly'],
-      ['Offsite Cloud Backup (Backblaze B2 / Synology C2, est.)', 400, 'monthly', 'Offsite cloud backup (est.)'],
     ],
     note: 'Full data redundancy. A single HDD failure costs zero data.',
   },
@@ -27,10 +25,8 @@ export const SCENARIOS = {
       ['SEO Tool (Q4 audit with free Google tools only)', 0, 'yearly'],
       ['KL Host Web Hosting – 7 sites (existing renewal)', 2310, 'yearly'],
       ['BillPlz Payment Gateway (existing renewal)', 150, 'yearly'],
-      ['Cloud, DNS & SSL Maintenance', 1200, 'yearly'],
-      ['Offsite Cloud Backup (Backblaze B2 / Synology C2, est.)', 400, 'monthly'],
     ],
-    note: 'carries NO drive redundancy if the HDD fails. Offsite backup is the only copy of the data.',
+    note: 'carries NO drive redundancy: if the HDD fails, the data on it is lost.',
   },
 }
 
